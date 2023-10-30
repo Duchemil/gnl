@@ -6,7 +6,7 @@
 /*   By: lduchemi <lduchemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:38:27 by lduchemi          #+#    #+#             */
-/*   Updated: 2023/10/30 17:21:42 by lduchemi         ###   ########.fr       */
+/*   Updated: 2023/10/30 18:02:55 by lduchemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ char	*get_next_line(int fd)
 		if (!buffer)
 			return (NULL);
 		bytes = read(fd, buffer, BUFFER_SIZE);
+		next_line = ft_strjoin(next_line, buffer, bytes);
 
 	}
 }
