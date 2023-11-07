@@ -6,95 +6,93 @@
 /*   By: lduchemi <lduchemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:38:27 by lduchemi          #+#    #+#             */
-/*   Updated: 2023/10/30 18:02:55 by lduchemi         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:47:42 by lduchemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-int	ft_strlen(char *s)
+// void	ft_putendl(char *s)
+// {
+// 	if (s != NULL)
+// 	{
+// 		write(1, s, ft_strlen(s, 0));
+// 		write(1, "\n", 1);
+// 	}
+// }
+
+// int	main(int ac, char **av)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	line = NULL;
+// 	fd = open(av[ac - 1], O_RDONLY);
+// 	get_next_line(fd);
+// 	get_next_line(fd);
+// 	close(fd);
+// }
+
+void	buff_erase(char *buff)
 {
 	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	char			*s;
-	unsigned int	i;
-
-	i = 0;
-	s = (char *)malloc(nmemb * size);
-	if (!s)
-		return (NULL);
-	while (i < nmemb * size)
-	{
-		s[i] = '\0';
-		i++;
-	}
-	return (s);
-}
-
-char	*ft_strjoin(char *s1, char *s2, int n)
-{
-	char	*join;
-	int		i;
-	int		j;
+	int	j;
 
 	i = 0;
 	j = 0;
-	join = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
-	if (!join)
-		return (NULL);
-	while (s1[i] && i < n)
-	{
-		join[i] = s1[i];
+	while (buff[i] != '\n')
 		i++;
-	}
-	while (s2[j] && i < n)
+	i++;
+	while (j < ft_strlen(buff, 0) - i)
 	{
-		join[i] = s2[j];
-		i++;
+		buff[j] = buff[i + j];
 		j++;
 	}
-	join[i] = '\0';
-	return (join);
+	buff[j] = '\0';
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*next_line;
-	char		*buffer;
-	int			pos;
-	int			bytes;
+	static char	buff[BUFFER_SIZE + 1];
+	int			byte;
+	char		*dest;
 
-	if (BUFFER_SIZE <= 0 || fd < 0 || fd > 10240)
+	dest = NULL;
+	byte = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 10240)
 		return (NULL);
-	buffer = NULL;
-	pos = ft_strchr(next_line, '\n', 1);
-	while (pos == -1 && pos != -5)
+	if (ft_strchr(buff) == 1)
 	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, 1);
-		if (!buffer)
-			return (NULL);
-		bytes = read(fd, buffer, BUFFER_SIZE);
-		next_line = ft_strjoin(next_line, buffer, bytes);
-
+		buff_erase(buff);
+		dest = ft_strjoin(dest, buff);
 	}
+	while (byte > 0 && ft_strchr(dest) == 0)
+	{
+		byte = read(fd, buff, BUFFER_SIZE);
+		if (byte <= 0)
+			return (dest);
+		buff[byte] = '\0';
+		dest = ft_strjoin(dest, buff);
+	}
+	return (dest);
 }
 
-int	main(int argc, char **argv)
-{
-	char	*filename;
+// char	*get_next_line(int fd)
+// {
+// 	static char	buff[BUFFER_SIZE + 1] = "";
+// 	int			byte;
+// 	char		*dest;
 
-	if (argc == 1)
-	{
-		filename = argv[1];
-		printf("Gnl : %s", get_next_line(open(filename, O_WRONLY | O_CREAT | O_TRUNC)));
-	}
-	return (0);
-}
+// 	dest = NULL;
+// 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >  10240)
+// 		return (NULL);
+// 	// if (dans buff si il y a une ligne )
+// 		//cut l'ancienne ligne
+// 		//ajouter le rest a dest (attention on s'arrete la new ligne)
+// 	//boucle de read  si dans ce que tu a lue  tu trouve pas la ligne
+// 	// elle vas tout stocker dans dest quand il y a pas de ligne
+// 		byte = read(fd, buff, BUFFER_SIZE);
+// 		buff[byte] = '\0';
+// 	//}
+// }
