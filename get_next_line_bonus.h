@@ -6,7 +6,7 @@
 /*   By: lduchemi <lduchemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 13:39:05 by lduchemi          #+#    #+#             */
-/*   Updated: 2023/11/09 14:22:53 by lduchemi         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:21:54 by lduchemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*get_next_line(int fd);
 int		ft_strchr(char *s);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strndup(const char *src, int n);
+int		dest_free(ssize_t byte, char *dest);
 int		ft_strlen(char *s, int j);
 
 #endif
